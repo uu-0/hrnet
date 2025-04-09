@@ -10,6 +10,7 @@ import CustomDatePicker from '../components/DatePicker'
 import dayjs from 'dayjs'
 
 import Dropdown from '../components/Dropdown'
+import Input from '../components/Input'
 
 import styled from 'styled-components'
 import { colors } from '../styles/colors'
@@ -77,30 +78,6 @@ const Label = styled.label`
   display: block;
   font-weight: bold;
   color: black;
-`
-
-const Input = styled.input`
-  width: 96%;
-  padding: 16.5px 14px;
-  margin: 10px 0 20px 0;
-  border: 1px solid ${({ $hasError }) => ($hasError ? 'red' : '#ddd')};
-  border-radius: 5px;
-  font-size: 18px;
-  color: black;
-  ${montserratFont};
-  
-  &::placeholder {
-    color: ${({ $hasError }) => ($hasError ? 'red' : '#aaa')};
-  }
-
-  &:focus {
-    border-color: ${({ $hasError }) => ($hasError ? 'red' : colors.blue)};
-    outline: none;
-  }
-  
-  &:hover {
-    border-color: ${({ $hasError }) => ($hasError ? 'red' : 'black')};
-  }
 `
 
 const ButtonGroup = styled.div`
@@ -173,7 +150,7 @@ export default function CreateEmployee() {
 
   //gère la soumission du formulaire pour les onglets informations ou adresse
   function handleSubmit(e) {
-    e.preventDefault();
+    e.preventDefault()
   
     //valider et gérer la soumission du formulaire en fonction de l'onglet actif
     if (activeTab === 'information') {
@@ -197,12 +174,12 @@ export default function CreateEmployee() {
                       formData.state.trim() !== '' &&
                       formData.zipCode.trim() !== ''
 
-      if (!isValid) return // Prevent submission if address fields are missing
+      if (!isValid) return //empêche la soumission si les champs du form adress sont manquants
 
-      // Dispatch the action to add employee to the redux store
+      //envoie de l'action pour add un employé au store
       dispatch(addEmployee(formData))
 
-      // Open success modal and reset form data
+      //ouvre la modale et réinitialise les données du formulaire
       setIsModalOpen(true)
       setFormData({
         firstName: '',
@@ -213,17 +190,17 @@ export default function CreateEmployee() {
         city: '',
         state: '',
         zipCode: '',
-        department: ''
+        department: '' 
       })
 
-      // Reset form submission states and switch back to the information tab
+      //réinitialise les états de soumission du formulaire et retourne au form Information
       setIsInformationsFormSubmitted(false)
       setIsAddressFormSubmitted(false)
       setActiveTab('information')
     }
   }
 
-  // Handle the back button to switch tabs
+  //change l'onglet à Information
   function handleBack() {
     setActiveTab('information')
   }
@@ -239,34 +216,31 @@ export default function CreateEmployee() {
           </ViewCurrentEmployee>
         </Header>
 
-        {/* Tab buttons for switching between information and address forms */}
+        {/*boutons d'onglets pour basculer entre les formulaires d'information et d'adresse*/}
         <Tabs>
           <Tab $active={activeTab === 'information'}>INFORMATIONS</Tab>
           <Tab $active={activeTab === 'address'}>ADDRESS</Tab>
         </Tabs>
 
-        {/* Form submission logic */}
+        {/*logique de soumission de formulaire*/}
         <form onSubmit={handleSubmit}>
           {activeTab === 'information' ? (
             <>
               {/*information form fields*/}
-              <Label>First Name</Label>
-              <Input 
-                type='text' 
-                name='firstName' 
-                value={formData.firstName} 
-                onChange={handleChange} 
-                $hasError={isInformationsFormSubmitted && !formData.firstName} 
-                placeholder={isInformationsFormSubmitted && !formData.firstName ? 'This field is required' : null} 
+              <Input
+                label="First Name"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleChange}
+                hasError={isInformationsFormSubmitted && !formData.firstName}
               />
-              <Label>Last Name</Label>
-              <Input 
-                type='text' 
-                name='lastName' 
-                value={formData.lastName} 
-                onChange={handleChange} 
-                $hasError={isInformationsFormSubmitted && !formData.lastName} 
-                placeholder={isInformationsFormSubmitted && !formData.lastName ? 'This field is required' : null} />
+              <Input
+                label="Last Name"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+                hasError={isInformationsFormSubmitted && !formData.lastName}
+              />
               <Label>Date of Birth</Label>
               <CustomDatePicker
                 name='birthDate'
@@ -280,7 +254,7 @@ export default function CreateEmployee() {
               <Dropdown
                 options={['Sales', 'Marketing', 'Engineering', 'Human Resources', 'Legal']}
                 selected={formData.department}
-                onSelect={handleDepartmentSelect} // Appel de la fonction handleDepartmentSelect
+                onSelect={handleDepartmentSelect}
                 required
                 formSubmitted={isInformationsFormSubmitted}
               />
@@ -300,24 +274,20 @@ export default function CreateEmployee() {
           ) : (
             <>
               {/*address form fields*/}
-              <Label>Street</Label>
-              <Input 
-                type='text' 
-                name='street' 
-                value={formData.street} 
-                onChange={handleChange} 
-                $hasError={isAddressFormSubmitted && !formData.street} 
-                placeholder={isAddressFormSubmitted && !formData.street ? 'This field is required' : null}
-                 />
-              <Label>City</Label>
-              <Input 
-                type='text' 
-                name='city' 
-                value={formData.city} 
-                onChange={handleChange} 
-                $hasError={isAddressFormSubmitted && !formData.city} 
-                placeholder={isAddressFormSubmitted && !formData.city ? 'This field is required' : null}
-                />
+              <Input
+                label="Street"
+                name="street"
+                value={formData.street}
+                onChange={handleChange}
+                hasError={isAddressFormSubmitted && !formData.street}
+              />
+              <Input
+                label="City"
+                name="city"
+                value={formData.city}
+                onChange={handleChange}
+                hasError={isAddressFormSubmitted && !formData.city}
+              />
               <Label>State</Label>
               <Dropdown
                 options={statesData.states}
@@ -326,15 +296,14 @@ export default function CreateEmployee() {
                 required
                 formSubmitted={isAddressFormSubmitted}
               />
-              <Label>Zip Code</Label>
-              <Input 
-                type='number' 
-                name='zipCode' 
-                value={formData.zipCode} 
-                onChange={handleChange} 
-                min='0' 
-                $hasError={isAddressFormSubmitted && !formData.zipCode} 
-                placeholder={isAddressFormSubmitted && !formData.zipCode ? 'This field is required' : null} 
+              <Input
+                label="Zip Code"
+                name="zipCode"
+                type="number"
+                value={formData.zipCode}
+                onChange={handleChange}
+                hasError={isAddressFormSubmitted && !formData.zipCode}
+                min="0"
               />
               <ButtonGroup>
                 <Button type='button' onClick={handleBack}>Back</Button>
