@@ -9,7 +9,6 @@ import { createGlobalStyle } from 'styled-components'
 import { colors } from './styles/colors'
 import { montserratFont } from './styles/font'
 
-import Home from './pages/Home'
 import CreateEmployee from './pages/CreateEmployee'
 import EmployeeList from './pages/EmployeeList'
 import Error from './pages/Error'
@@ -38,9 +37,8 @@ root.render(
       <Provider store={store}>
         <Router>
           <GlobalStyle />
-          <Routes>          
-            <Route path="/" element={<Home />} />
-            <Route path="/createEmployee" element={<CreateEmployee />} />
+          <Routes>      
+            <Route path="/" element={<CreateEmployee />} />
             <Route path="/EmployeeList" element={<EmployeeList />} />
             <Route path="*" element={<Error />} />
           </Routes>
