@@ -20,7 +20,7 @@ import statesData from '../assets/states.json'
 
 import HRNetLogo from '../components/Logo'
 
-//styles pour la mise en page
+//page principale
 const Page = styled.div`
   display: flex;
   flex-direction: column;
@@ -28,7 +28,7 @@ const Page = styled.div`
   align-items: center;
   background-color: transparent;
 `
-
+//conytainer de la page
 const Container = styled.div`
   background-color: white;
   padding: 30px;
@@ -36,22 +36,22 @@ const Container = styled.div`
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
   width: 650px;
 `
-
+//header de la page
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
 `
-
+//lien vers la liste des employés
 const ViewCurrentEmployee = styled.div`
   margin-top: 30px;
   text-decoration: underline;
   cursor: pointer;
 `
-
+//titre de la page
 const Title = styled.h1`
   font-size: 28px;
 `
-
+//tabulation
 const Tabs = styled.div`
   display: flex;
   justify-content: space-between;
@@ -59,7 +59,7 @@ const Tabs = styled.div`
   margin-left: -30px;
   margin-right: -30px;
 `
-
+//élément tabulation
 const Tab = styled.button`
   margin-top: 10px;
   margin-bottom: 15px;
@@ -102,9 +102,10 @@ const Button = styled.button`
 `
 
 export default function CreateEmployee() {
-  //variables d'état pour gérer les données du formulaire et les états de l'interface utilisateur
+  //variables d'état pour gérer la tabulation, la modale, et les données du formulaire
   const [activeTab, setActiveTab] = useState('information')
   const [isModalOpen, setIsModalOpen] = useState(false) 
+  const [modalText, setModalText] = useState('')
   const [isInformationsFormSubmitted, setIsInformationsFormSubmitted] = useState(false) 
   const [isAddressFormSubmitted, setIsAddressFormSubmitted] = useState(false) 
 
@@ -138,7 +139,7 @@ export default function CreateEmployee() {
     setFormData({ ...formData, [name]: date || null })
   }
 
-  //gèrer la sélection du département depuis le menu déroulant
+  //gère la sélection du département depuis le menu déroulant
   function handleDepartmentSelect(department) {
     setFormData({ ...formData, department })
   }
@@ -152,35 +153,48 @@ export default function CreateEmployee() {
   function handleSubmit(e) {
     e.preventDefault()
   
-    //valider et gérer la soumission du formulaire en fonction de l'onglet actif
+    //valide et gère la soumission du formulaire en fonction de l'onglet actif
     if (activeTab === 'information') {
       setIsInformationsFormSubmitted(true)
-
+  
       const isValid = formData.firstName.trim() !== '' &&
                       formData.lastName.trim() !== '' &&
                       formData.birthDate.trim() !== '' &&
                       formData.department.trim() !== ''
-      //empêche la progression si un champ requis est manquant        
-      if (!isValid) return
+
+      //affiche une modale d'erreur et empêche la progression si un champ requis est manquant    
+      if (!isValid) {
+        setModalText('Please fill in all fields required in the Informations form')
+        setIsModalOpen(true)
+        return
+      }
 
       //passer à l'onglet adresse
       setActiveTab('address') 
-
+  
     } else {
       setIsAddressFormSubmitted(true)
-
+  
       const isValid = formData.street.trim() !== '' &&
                       formData.city.trim() !== '' &&
                       formData.state.trim() !== '' &&
                       formData.zipCode.trim() !== ''
 
-      if (!isValid) return //empêche la soumission si les champs du form adress sont manquants
-
+      //empêche la soumission si les champs du form adress sont manquants
+      if (!isValid) {
+        setModalText('Please fill in all fields required in the Address form')
+        setIsModalOpen(true)
+        return
+      }
+  
       //envoie de l'action pour add un employé au store
       dispatch(addEmployee(formData))
-
-      //ouvre la modale et réinitialise les données du formulaire
+  
+      //affiche  la modale de succès
+      setModalText('Employee added successfully!')
       setIsModalOpen(true)
+  
+      //réinitialise les données du formulaire
       setFormData({
         firstName: '',
         lastName: '',
@@ -250,13 +264,13 @@ export default function CreateEmployee() {
                 maxDate={dayjs()}
                 required
               />
-              <Label>Department</Label>
               <Dropdown
                 options={['Sales', 'Marketing', 'Engineering', 'Human Resources', 'Legal']}
                 selected={formData.department}
                 onSelect={handleDepartmentSelect}
                 required
                 formSubmitted={isInformationsFormSubmitted}
+                label='Department'
               />
               <Label>Start Date</Label>
               <CustomDatePicker
@@ -288,13 +302,13 @@ export default function CreateEmployee() {
                 onChange={handleChange}
                 hasError={isAddressFormSubmitted && !formData.city}
               />
-              <Label>State</Label>
               <Dropdown
                 options={statesData.states}
                 selected={formData.state}
                 onSelect={handleStateSelect} 
                 required
                 formSubmitted={isAddressFormSubmitted}
+                label="State"
               />
               <Input
                 label="Zip Code"
@@ -318,8 +332,9 @@ export default function CreateEmployee() {
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title="Success"
-        text="Employee added successfully!"
+        title={modalText === 'Employee added successfully!' ? "Success" : "Error"}
+        text={modalText}
+        isError={modalText !== 'Employee added successfully!'}
         escapeClose={true}
         clickClose={true}
       />

@@ -9,7 +9,7 @@ import { montserratFont } from '../styles/font'
 
 import HRNetLogo from '../components/Logo'
 
-//styles pour la mise en page
+//page principale
 const Page = styled.div`
   display: flex;
   flex-direction: column;
@@ -17,44 +17,50 @@ const Page = styled.div`
   align-items: center;
   background-color: transparent;
 `
-
+//container de la page
 const Container = styled.div`
   background-color: white;
   padding: 30px;
   border-radius: 10px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-  width: 1000px;
+  width: 1500px;
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `
 
+//header de la page avec le titre et le btn back
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
 `
-
+//titre
 const Title = styled.h1`
   color: black;
   font-size: 22px;
 `
-
+//btn back
 const Back = styled.div`
   margin-top: 30px;
   text-decoration: underline;
   cursor: pointer;
 `
+//select et search bloc
 const Bloc = styled.div`
   margin-top: 15px;
   margin-bottom: 20px;
   display: flex;
   gap: 20px;
   `
-
+//select 
 const Select = styled.select`
   border: 1px solid lightGray;
   border-radius: 8px;
   padding: 16.5px 14px;
   font-size: 16px;
 `
-
+//search
 const SearchInput = styled.input`
   width: 100%;
   padding: 16.5px 14px;
@@ -66,7 +72,15 @@ const SearchInput = styled.input`
     border-color: #007bff;
   }
 `
-
+//pagination
+const Pagination = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: auto;
+`
+//boutons pagination (back et next)
 const Button = styled.button`
   margin: 10px;
   padding: 10px;
@@ -136,11 +150,17 @@ export default function EmployeeList() {
       <Container>
         <Header>
           <Title>Employee List</Title>
-          <Back onClick={() => navigate('/CreateEmployee')}>Back</Back>
+          <Back onClick={() => navigate('/')}>Back</Back>
         </Header>
         <Bloc>
             {/* sélection du nombre d'éléments affichés par page */}
-            <Select value={itemsPerPage} onChange={(e) => setItemsPerPage(Number(e.target.value))}>
+            <Select
+              value={itemsPerPage}
+              onChange={(e) => {
+                setItemsPerPage(Number(e.target.value))
+                setCurrentPage(1)
+              }}
+            >
               <option value={1}>1</option>
               <option value={5}>5</option>
               <option value={10}>10</option>
@@ -153,12 +173,15 @@ export default function EmployeeList() {
               type="text"
               placeholder="Search by first or last name..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => {
+                setSearchQuery(e.target.value)
+                setCurrentPage(1)
+              }}
             />
         </Bloc>
         
         {/* affichage du nombre d'employés affichés */}
-        <p>Showing {paginatedEmployees.length} of {sortedEmployees.length} employees</p>
+        <p>Showing {paginatedEmployees.length} of {sortedEmployees.length} employees in {totalPages} pages</p>
 
         {/* tableau employés */}
         <EmployeeTable
@@ -168,11 +191,21 @@ export default function EmployeeList() {
         />
 
         {/* pagination */}
-        <div>
-          <Button disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>Back</Button>
+        <Pagination>
+          <Button 
+            disabled={currentPage === 1} 
+            onClick={() => setCurrentPage(currentPage - 1)}
+          >
+            Back
+          </Button>
           <span> Page {currentPage} of {totalPages} </span>
-          <Button disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>Next</Button>
-        </div>
+          <Button 
+            disabled={currentPage >= totalPages || totalPages === 0}
+            onClick={() => setCurrentPage(currentPage + 1)}
+          >
+            Next
+          </Button>
+        </Pagination>
       </Container>
     </Page>
   )

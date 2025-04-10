@@ -1,24 +1,33 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
 
-// tableau
+//tableau
 const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
 `
+//bloc qui contient l'header
+const HeaderBloc = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
 
-// header du tableau
+//header du tableau
 const TableHeader = styled.th`
+  width: 10%;
   cursor: pointer;
-  padding: 10px 0px;
+  padding: 0px 5px 8px 5px;
   text-align: left;
-  border-bottom: 2px solid #ddd;
+  border-top: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;border-bottom: 2px solid #ddd;
   user-select: none;
 `
 
-// composant Triangle (ici, on utilise $active et $direction)
+//triangle
 const Triangle = styled.span`
-  margin-left: 5px;
+  align-item: right;
   display: inline-block;
   font-size: 20px;
   color: #999;
@@ -28,28 +37,35 @@ const Triangle = styled.span`
   ${({ $active, $direction }) =>
     $active &&
     css`
-    color: blue;
+      color: blue;
       transform: rotate(${$direction === 'asc' ? '0deg' : '180deg'});
     `}
 `
 
-// cellules
+//cellules
 const TableCell = styled.td`
+  text-align: left;
+  height: 20px;
   padding: 10px;
   border-bottom: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
 `
 
 export default function EmployeeTable({ employees, handleSort, sortConfig }) {
-  const renderHeader = (label, key) => {
+  function renderHeader(label, key) {
     const isActive = sortConfig.key === key
-
+  
     return (
       <TableHeader onClick={() => handleSort(key)}>
-        {label}
-        <Triangle $active={isActive} $direction={sortConfig.direction}>⏷</Triangle>
+        <HeaderBloc>
+          <span>{label}</span>
+          <Triangle $active={isActive} $direction={sortConfig.direction}>⏷</Triangle>
+        </HeaderBloc>
       </TableHeader>
     )
   }
+  
 
   return (
     <Table>
@@ -67,7 +83,14 @@ export default function EmployeeTable({ employees, handleSort, sortConfig }) {
         </tr>
       </thead>
       <tbody>
-        {employees.map((employee, index) => (
+      {employees.length === 0 ? (
+    <tr>
+      <TableCell colSpan="9">
+        No data in the table
+      </TableCell>
+    </tr>
+  ) : (
+    employees.map((employee, index) => (
           <tr key={index}>
             <TableCell>{employee.firstName}</TableCell>
             <TableCell>{employee.lastName}</TableCell>
@@ -79,7 +102,8 @@ export default function EmployeeTable({ employees, handleSort, sortConfig }) {
             <TableCell>{employee.state}</TableCell>
             <TableCell>{employee.zipCode}</TableCell>
           </tr>
-        ))}
+        ))
+      )}
       </tbody>
     </Table>
   )
