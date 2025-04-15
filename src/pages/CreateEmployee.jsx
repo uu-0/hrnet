@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { addEmployee } from '../redux/employeesSlice'
 
-import Modal from 'react-modal-component-uu0'
+import Modal from 'uu0-modal-react-component'
 
 import CustomDatePicker from '../components/DatePicker'
 import dayjs from 'dayjs'
