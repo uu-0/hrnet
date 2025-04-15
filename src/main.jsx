@@ -21,7 +21,7 @@ const GlobalStyle = createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
     color: black;
     background: linear-gradient(90deg, ${colors.blue}, ${colors.pink}, ${colors.orange});
-    margin-top: 100px;
+    margin-top: 50px;
   }
 
   body {
