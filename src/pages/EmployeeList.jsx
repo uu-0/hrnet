@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom'
 
 import EmployeeTable from '../components/EmployeeTable'
 
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
+import { device } from '../styles/media'
 import { montserratFont } from '../styles/font'
 
 import HRNetLogo from '../components/Logo'
@@ -23,11 +24,27 @@ const Container = styled.div`
   padding: 30px;
   border-radius: 10px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-  width: 1500px;
-  min-height: 500px;
+  width: 1300px;
+  min-height: 450px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  @media ${device.desktop} {
+    width: 95%;
+  }
+  @media ${device.laptop} {
+    width: 90%;
+  }
+
+  @media ${device.tablet} {
+    width: 85%;
+    padding: 20px;
+  }
+
+  @media ${device.mobileL} {
+    width: 80%;
+    padding: 15px;
+  }
 `
 
 //header de la page avec le titre et le btn back
@@ -39,12 +56,20 @@ const Header = styled.div`
 const Title = styled.h1`
   color: black;
   font-size: 22px;
+  @media ${device.tablet} {
+    font-size: 18px;
+  }
 `
 //btn back
 const Back = styled.div`
   margin-top: 30px;
+  font-size: 15px;
   text-decoration: underline;
   cursor: pointer;
+  @media ${device.tablet} {
+    margin-top: 15px;
+    font-size: 12px;
+  }
 `
 //select et search bloc
 const Bloc = styled.div`
@@ -52,14 +77,52 @@ const Bloc = styled.div`
   margin-bottom: 20px;
   display: flex;
   gap: 20px;
-  `
+`
+//wrapper du select pour inclure le triangle custom
+const SelectWrapper = styled.div`
+  position: relative;
+  width: 60px;
+`
 //select 
 const Select = styled.select`
   border: 1px solid lightGray;
   border-radius: 8px;
-  padding: 16.5px 14px;
-  font-size: 16px;
+  padding: 16.5px 10px 16.5px 10px;
+  font-size: 13px;
+  ${montserratFont};
+  appearance: none;
+  background-color: white;
+  width: 100%;
+  &:hover{
+    border-color: #007bff;
+    cursor: pointer;
+  }
+  @media ${device.tablet} {
+    font-size: 10px;
+  }
 `
+//triangle custom
+const Triangle = styled.span`
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%) rotate(0deg);
+  font-size: 12px;
+  color: #999;
+  pointer-events: none;
+  transition: transform 0.2s ease, color 0.2s ease;
+  ${({ $active }) =>
+    $active &&
+    css`
+      color: blue;
+      transform: translateY(-50%) rotate(180deg);
+    `}
+  @media ${device.tablet} {
+    top: 49%;
+    font-size: 8px;
+  }
+`
+
 //search
 const SearchInput = styled.input`
   width: 100%;
@@ -67,11 +130,20 @@ const SearchInput = styled.input`
   border: 1px solid lightGray;
   border-radius: 8px;
   ${ montserratFont };
-  font-size: 16px;
+  font-size: 13px;
   &:hover{
     border-color: #007bff;
+  } 
+    @media ${device.tablet} {
+    font-size: 10px;
   }
 `
+
+//nombre d'employés affichés
+const EmployeeNumber = styled.p`
+  font-size: 13px;
+`
+
 //pagination
 const Pagination = styled.div`
   width: 100%;
@@ -79,6 +151,7 @@ const Pagination = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: auto;
+  font-size: 13px;
 `
 //boutons pagination (back et next)
 const Button = styled.button`
@@ -100,11 +173,12 @@ export default function EmployeeList() {
   const employees = useSelector((state) => state.employees)
   const navigate = useNavigate()
 
-  //états pour la gestion du tri, des items par page, de la pagination et de la recherche
+  //états pour la gestion du tri, des items par page, de la pagination, de la recherche, et du select
   const [sortConfig, setSortConfig] = useState({ key: '', direction: '' })
   const [itemsPerPage, setItemsPerPage] = useState(10)
   const [searchQuery, setSearchQuery] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
   /**
    * gère le tri des employés en fonction d'une clé spécifique
@@ -154,19 +228,27 @@ export default function EmployeeList() {
         </Header>
         <Bloc>
             {/* sélection du nombre d'éléments affichés par page */}
-            <Select
-              value={itemsPerPage}
-              onChange={(e) => {
-                setItemsPerPage(Number(e.target.value))
-                setCurrentPage(1)
-              }}
-            >
-              <option value={1}>1</option>
-              <option value={5}>5</option>
-              <option value={10}>10</option>
-              <option value={20}>20</option>
-              <option value={50}>50</option>
-            </Select>
+            <SelectWrapper>
+              <Select
+                value={itemsPerPage}
+                onChange={(e) => {
+                  setItemsPerPage(Number(e.target.value))
+                  setCurrentPage(1)
+                  setIsDropdownOpen(false)
+                  e.target.blur()
+                }}
+                onFocus={() => setIsDropdownOpen(true)} 
+                onBlur={() => setIsDropdownOpen(false)} 
+              >
+                <option value={1}>1</option>
+                <option value={5}>5</option>
+                <option value={10}>10</option>
+                <option value={20}>20</option>
+                <option value={50}>50</option>
+              </Select>
+              <Triangle $active={isDropdownOpen}>▼</Triangle>
+            </SelectWrapper>
+
 
             {/* champ de recherche */}
             <SearchInput
@@ -181,7 +263,9 @@ export default function EmployeeList() {
         </Bloc>
         
         {/* affichage du nombre d'employés affichés */}
-        <p>Showing {paginatedEmployees.length} of {sortedEmployees.length} employees in {totalPages} pages</p>
+        <EmployeeNumber>
+          Showing {paginatedEmployees.length} of {sortedEmployees.length} employee{sortedEmployees.length > 1 ? 's' : ''} in {totalPages} page{totalPages > 1 ? 's' : ''}
+        </EmployeeNumber>
 
         {/* tableau employés */}
         <EmployeeTable

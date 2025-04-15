@@ -14,53 +14,131 @@ import Input from '../components/Input'
 
 import styled from 'styled-components'
 import { colors } from '../styles/colors'
-
+import { device } from '../styles/media'
 import { montserratFont } from '../styles/font'
+
 import statesData from '../assets/states.json'
 
 import HRNetLogo from '../components/Logo'
 
 //page principale
-const Page = styled.div`
+export const Page = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: transparent;
 `
-//conytainer de la page
-const Container = styled.div`
+
+//container de la page
+export const Container = styled.div`
   background-color: white;
   padding: 30px;
   border-radius: 10px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-  width: 650px;
+  width: 500px;
+
+  @media ${device.laptop} {
+    width: 500px;
+    padding: 20px;
+  }
+
+  @media ${device.tablet} {
+    width: 90%;
+    padding: 15px;
+  }
+
+  @media ${device.mobileL} {
+    width: 90%;
+    padding: 10px;
+  }
+
+  @media ${device.mobileM} {
+    width: 95%;
+    padding: 8px;
+  }
+
+  @media ${device.mobileS} {
+    width: 100%;
+    padding: 6px;
+  }
 `
+
 //header de la page
-const Header = styled.div`
+export const Header = styled.div`
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+  @media ${device.mobileM} {
+    justify-content: left;
+    flex-direction: column;
+  }
 `
+
 //lien vers la liste des employés
-const ViewCurrentEmployee = styled.div`
+export const ViewCurrentEmployee = styled.div`
   margin-top: 30px;
   text-decoration: underline;
   cursor: pointer;
+  font-size: 15px;
+  @media ${device.tablet} {
+    font-size: 13px;
+    margin-top: 0px;
+  }
+  @media ${device.mobileL} {
+    font-size: 12px;
+    margin-top: 0px;
+    margin-bottom: 10px;
+  }
 `
+
 //titre de la page
-const Title = styled.h1`
-  font-size: 28px;
+export const Title = styled.h1`
+  font-size: 22px;
+  @media ${device.tablet} {
+    font-size: 22px;
+  }
+  @media ${device.mobileL} {
+    font-size: 16px;
+  }
 `
+
 //tabulation
-const Tabs = styled.div`
+export const Tabs = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
   margin-left: -30px;
   margin-right: -30px;
+  flex-wrap: wrap;
+  @media ${device.desktop} {
+    margin-left: -30px;
+    margin-right: -30px;
+  }
+  @media ${device.laptop} {
+    margin-left: -20px;
+    margin-right: -20px;
+  }
+  @media ${device.tablet} {
+    margin-left: -15px;
+    margin-right: -15px;
+  }
+  @media ${device.mobileL} {
+    margin-left: -10px;
+    margin-right: -10px;
+  }
+  @media ${device.mobileM} {
+    margin-left: -8px;
+    margin-right: -8px;
+  }
+  @media ${device.mobileS} {
+    margin-left: -6px;
+    margin-right: -6px;
+  }
 `
+
 //élément tabulation
-const Tab = styled.button`
+export const Tab = styled.button`
   margin-top: 10px;
   margin-bottom: 15px;
   flex: 1;
@@ -68,36 +146,54 @@ const Tab = styled.button`
   border: none;
   background: ${(props) => (props.$active ? colors.blue : '#f1f1f1')};
   color: ${(props) => (props.$active ? 'white' : 'black')};
+  font-size: 12px;
   font-weight: bold;
   ${ montserratFont };
   font-weight: 600;
+  cursor: pointer;
+  @media ${device.mobileL} {
+    font-size: 10px;
+  }
 `
 
-const Label = styled.label`
-  font-size: 17px;
+export const Label = styled.label`
+  font-size: 14px;
   display: block;
   font-weight: bold;
   color: black;
+  margin-top: 10px;
+  @media ${device.mobileL} {
+    font-size: 12px;
+  }
 `
 
-const ButtonGroup = styled.div`
+export const ButtonGroup = styled.div`
   display: flex;
   justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
 `
 
-const Button = styled.button`
+export const Button = styled.button`
   width: 33%;
   padding: 12px;
   border: none;
   border-radius: 5px;
   background: ${colors.blue};
   color: white;
-  font-size: 18px;
+  font-size: 14px;
   font-weight: bold;
   cursor: pointer;
   transition: background 0.3s;
   &:hover {
     background: ${colors.orange};
+  }
+  @media ${device.tablet} {
+    width: 100%;
+    padding: 10px;
+  }
+  @media ${device.mobileL} {
+    font-size: 12px;
   }
 `
 
