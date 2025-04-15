@@ -1,35 +1,61 @@
 import React from 'react'
+
 import styled, { css } from 'styled-components'
+import { device } from '../styles/media'
 
 //tableau
 const Table = styled.table`
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  
 `
-//bloc qui contient l'header
+
+//conteneur de l'en-tête
 const HeaderBloc = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: center;
+  gap: 5px;
+  @media ${device.mobileL} {
+    gap: 3px;
+  }
 `
 
-//header du tableau
+//en-têtes de colonnes
 const TableHeader = styled.th`
-  width: 10%;
+  width: 11%;
   cursor: pointer;
-  padding: 0px 5px 8px 5px;
+  padding: 12px 15px;
   text-align: left;
-  border-top: 1px solid #ddd;
-  border-left: 1px solid #ddd;
-  border-right: 1px solid #ddd;border-bottom: 2px solid #ddd;
+  background-color: #f4f6f8;
+  border-bottom: 2px solid #ddd;
   user-select: none;
+  transition: background-color 0.2s ease;
+  &:hover {
+    background-color: #eaeef1;
+  }
+    @media ${device.tablet} {
+    width: 5%;
+    font-size: 8px;
+    padding: 8px;
+  }
 `
 
-//triangle
+const TitleHeader = styled.tr`
+  font-size: 13px;
+  color: #333;
+   @media ${device.mobileL} {
+    font-size: 11px;
+  }
+`
+
+//triangle de tri
 const Triangle = styled.span`
-  align-item: right;
-  display: inline-block;
-  font-size: 20px;
+  font-size: 14px;
   color: #999;
   transform: rotate(0deg);
   transition: transform 0.2s ease, color 0.2s ease;
@@ -41,21 +67,33 @@ const Triangle = styled.span`
       transform: rotate(${$direction === 'asc' ? '0deg' : '180deg'});
     `}
 `
+//lignes du tableau
+const TableRow = styled.tr`
+  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease;
+  &:hover td {
+    background-color: #f1f5f9;
+  }
+`
 
 //cellules
 const TableCell = styled.td`
-  text-align: left;
-  height: 20px;
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-  border-left: 1px solid #ddd;
-  border-right: 1px solid #ddd;
+  font-size: 12px;
+  text-align: center;
+  padding: 12px 15px;
+  background-color: ${({ $odd }) => ($odd ? '#fff' : '#f9fafb')};
+  color: #444;
+  border-bottom: 1px solid #eee;
+  @media ${device.tablet} {
+    font-size: 8px;
+    padding: 8px;
+  }
 `
 
 export default function EmployeeTable({ employees, handleSort, sortConfig }) {
   function renderHeader(label, key) {
     const isActive = sortConfig.key === key
-  
+
     return (
       <TableHeader onClick={() => handleSort(key)}>
         <HeaderBloc>
@@ -65,12 +103,11 @@ export default function EmployeeTable({ employees, handleSort, sortConfig }) {
       </TableHeader>
     )
   }
-  
 
   return (
     <Table>
       <thead>
-        <tr>
+        <TitleHeader>
           {renderHeader('First Name', 'firstName')}
           {renderHeader('Last Name', 'lastName')}
           {renderHeader('Start Date', 'startDate')}
@@ -80,30 +117,28 @@ export default function EmployeeTable({ employees, handleSort, sortConfig }) {
           {renderHeader('City', 'city')}
           {renderHeader('State', 'state')}
           {renderHeader('Zip Code', 'zipCode')}
-        </tr>
+        </TitleHeader>
       </thead>
       <tbody>
-      {employees.length === 0 ? (
-    <tr>
-      <TableCell colSpan="9">
-        No data in the table
-      </TableCell>
-    </tr>
-  ) : (
-    employees.map((employee, index) => (
-          <tr key={index}>
-            <TableCell>{employee.firstName}</TableCell>
-            <TableCell>{employee.lastName}</TableCell>
-            <TableCell>{employee.startDate}</TableCell>
-            <TableCell>{employee.department}</TableCell>
-            <TableCell>{employee.birthDate}</TableCell>
-            <TableCell>{employee.street}</TableCell>
-            <TableCell>{employee.city}</TableCell>
-            <TableCell>{employee.state}</TableCell>
-            <TableCell>{employee.zipCode}</TableCell>
-          </tr>
-        ))
-      )}
+        {employees.length === 0 ? (
+          <TableRow>
+            <TableCell colSpan="9">No data in the table</TableCell>
+          </TableRow>
+        ) : (
+          employees.map((employee, index) => (
+            <TableRow key={index}>
+              <TableCell $odd={index % 2 === 0}>{employee.firstName}</TableCell>
+              <TableCell $odd={index % 2 === 0}>{employee.lastName}</TableCell>
+              <TableCell $odd={index % 2 === 0}>{employee.startDate}</TableCell>
+              <TableCell $odd={index % 2 === 0}>{employee.department}</TableCell>
+              <TableCell $odd={index % 2 === 0}>{employee.birthDate}</TableCell>
+              <TableCell $odd={index % 2 === 0}>{employee.street}</TableCell>
+              <TableCell $odd={index % 2 === 0}>{employee.city}</TableCell>
+              <TableCell $odd={index % 2 === 0}>{employee.state}</TableCell>
+              <TableCell $odd={index % 2 === 0}>{employee.zipCode}</TableCell>
+            </TableRow>
+          ))
+        )}
       </tbody>
     </Table>
   )

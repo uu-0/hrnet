@@ -4,8 +4,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 
-import { montserratFont } from '../styles/font'
-
 export default function CustomDatePicker({ name, value, onChange, minDate, maxDate, required }) {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -24,8 +22,11 @@ export default function CustomDatePicker({ name, value, onChange, minDate, maxDa
               '& .MuiInputBase-root': {
                 margin: '10px 0 20px 0',
                 borderRadius: '5px',
-                fontSize: '16px',
-                montserratFont
+                fontSize: '14px',
+                fontFamily: 'Montserrat',
+                fontOpticalSizing: 'auto',
+                fontWeight: '400',
+                fontStyle: 'normal',  
               },
             },
           },

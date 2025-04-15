@@ -1,28 +1,39 @@
 import React, { useState } from 'react'
+
 import styled, { css } from 'styled-components'
 import { colors } from '../styles/colors'
+import { device } from '../styles/media'
 
 //label du dropdown
 const Label = styled.label`
-  font-size: 17px;
+  font-size: 14px;
   display: block;
   font-weight: bold;
-  color: black;
+  color: black; 
+  @media ${device.mobileL} {
+  font-size: 12px;
+  }
 `
 //container du dropdown
 const DropdownContainer = styled.div`
   position: relative;
-  width: ${({ $width }) => $width || '100%'};
+  width: 98%;
   z-index: 1000;
+  @media ${device.tablet} {
+    width: 95%;
+  }
+  @media ${device.mobileL} {
+    width: 93%;
+  }
 `
 //bouton du dropdown
 const DropdownButton = styled.div`
   width: 96%;
-  padding: 16.5px 14px;
+  padding: 12px 14px;
   margin: 10px 0 20px 0;
   border: 1px solid ${({ $hasError }) => ($hasError ? 'red' : '#ddd')};
   border-radius: 5px;
-  font-size: 18px;
+  font-size: 14px;
   color: black;
   background-color: white;
   text-align: left;
@@ -40,7 +51,7 @@ const DropdownList = styled.ul`
   position: absolute;
   top: 100%;
   right: 0;
-  width: ${({ $width }) => $width || '60%'};
+  width: 60%;
   max-height: 200px;
   overflow-y: auto;
   background-color: white;
@@ -48,6 +59,7 @@ const DropdownList = styled.ul`
   border-radius: 5px;
   margin: 0;
   padding: 0;
+  font-size: 13px;
   list-style-type: none;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 `
@@ -77,7 +89,7 @@ const Triangle = styled.span`
     `}
 `
 
-export default function Dropdown({ options, selected, onSelect, required, formSubmitted, width, label }) {
+export default function Dropdown({ options, selected, onSelect, required, formSubmitted, label }) {
   const [isOpen, setIsOpen] = useState(false)
 
   //fonction pour modifier l'état d'ouverture du dropdown
@@ -97,13 +109,13 @@ export default function Dropdown({ options, selected, onSelect, required, formSu
   return (
     <>
       <Label htmlFor={options}>{label}</Label>
-      <DropdownContainer $width={width}>
+      <DropdownContainer>
         <DropdownButton $isOpen={isOpen} $hasError={hasError} onClick={handleToggle}>
-          <span>{hasError ? <span style={{ color: 'red' }}>This field is required</span> : selected || " "}</span>
+          <span>{hasError ? <span style={{ color: 'red', fontSize: '13px' }}>This field is required</span> : selected || " "}</span>
           <Triangle $active={isOpen} $direction={isOpen ? 'asc' : 'desc'}>⏷</Triangle>
         </DropdownButton>
         {isOpen && (
-          <DropdownList $width={width}>
+          <DropdownList>
             {options.map((option, index) => (
               <DropdownItem key={index} onClick={() => handleSelect(option)}>
                 {option}
