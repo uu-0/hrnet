@@ -36,7 +36,10 @@ export const Container = styled.div`
   padding: 30px;
   border-radius: 10px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-  width: 500px;
+  width: 600px;
+  min-height: 600px; 
+  max-width: 100%;
+  box-sizing: border-box;
 
   @media ${device.laptop} {
     width: 500px;
@@ -45,21 +48,25 @@ export const Container = styled.div`
 
   @media ${device.tablet} {
     width: 90%;
+    max-width: 500px;
     padding: 15px;
   }
 
   @media ${device.mobileL} {
     width: 90%;
+    max-width: 500px;
     padding: 10px;
   }
 
   @media ${device.mobileM} {
     width: 95%;
+    max-width: 500px;
     padding: 8px;
   }
 
   @media ${device.mobileS} {
     width: 100%;
+    max-width: 500px;
     padding: 6px;
   }
 `
@@ -77,13 +84,14 @@ export const Header = styled.div`
 
 //lien vers la liste des employés
 export const ViewCurrentEmployee = styled.div`
-  margin-top: 30px;
+  margin-top: 18px;
   text-decoration: underline;
   cursor: pointer;
   font-size: 15px;
   @media ${device.tablet} {
     font-size: 13px;
     margin-top: 0px;
+    margin-left: 2px;
   }
   @media ${device.mobileL} {
     font-size: 12px;
@@ -156,10 +164,17 @@ export const Tab = styled.button`
   }
 `
 
+const Form = styled.form`
+  min-height: 300px;  
+  display: flex;
+  flex-direction: column;
+  gap: 1px;  
+`
+
 export const Label = styled.label`
   font-size: 14px;
   display: block;
-  font-weight: bold;
+  font-weight: 600;
   color: black;
   margin-top: 10px;
   @media ${device.mobileL} {
@@ -333,7 +348,7 @@ export default function CreateEmployee() {
         </Tabs>
 
         {/*logique de soumission de formulaire*/}
-        <form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit}>
           {activeTab === 'information' ? (
             <>
               {/*information form fields*/}
@@ -421,7 +436,7 @@ export default function CreateEmployee() {
               </ButtonGroup>
             </>
           )}
-        </form>
+        </Form>
       </Container>
 
       {/*utilisation de la modale du package react-modal-component-uu0 */}

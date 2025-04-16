@@ -4,10 +4,11 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 
-export default function CustomDatePicker({ name, value, onChange, minDate, maxDate, required }) {
+export default function CustomDatePicker({ id, name, value, onChange, minDate, maxDate, required }) {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <DatePicker
+        id={id}
         name={name}
         value={ value || null }
         onChange={(date) => onChange(date ? date.toISOString().split('T')[0] : '')}
@@ -26,7 +27,8 @@ export default function CustomDatePicker({ name, value, onChange, minDate, maxDa
                 fontFamily: 'Montserrat',
                 fontOpticalSizing: 'auto',
                 fontWeight: '400',
-                fontStyle: 'normal',  
+                fontStyle: 'normal', 
+                minHeight:' 20px'
               },
             },
           },

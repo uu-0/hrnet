@@ -1,6 +1,4 @@
 export const montserratFont = `
-    font-family: "Montserrat", sans-serif;
-    font-optical-sizing: auto;
+    font-family: system-ui;
     font-weight: 400;
-    font-style: normal;
 `;

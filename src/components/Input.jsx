@@ -10,12 +10,13 @@ import { device } from '../styles/media'
 const Label = styled.label`
   font-size: 14px;
   display: block;
-  font-weight: bold;
+  font-weight: 600;
   color: black;
   @media ${device.mobileL} {
-  font-size: 12px;
+    font-size: 12px;
   }
 `
+
 //input
 const StyledInput = styled.input`
   width: 94%;
@@ -24,10 +25,12 @@ const StyledInput = styled.input`
   border: 1px solid ${({ $hasError }) => ($hasError ? 'red' : '#ddd')};
   border-radius: 5px;
   font-size: 13px;
-  color: black;
+  color: ${({ $hasError }) => ($hasError ? 'red' : 'black')};
+  min-height: 20px;
   ${montserratFont};
   &::placeholder {
     color: ${({ $hasError }) => ($hasError ? 'red' : '#aaa')};
+    opacity: 1;
   }
   &:focus {
     border-color: ${({ $hasError }) => ($hasError ? 'red' : colors.blue)};
@@ -36,9 +39,11 @@ const StyledInput = styled.input`
   &:hover {
     border-color: ${({ $hasError }) => ($hasError ? 'red' : 'black')};
   }
+
   @media ${device.tablet} {
     width: 91%;
   }
+
   @media ${device.mobileL} {
     width: 89%;
   }
@@ -64,7 +69,7 @@ export default function Input({
         value={value}
         onChange={onChange}
         $hasError={hasError}
-        placeholder={hasError ? placeholder || 'This field is required' : undefined}
+        placeholder={hasError ? placeholder || 'This field is required' : ' '} // espace pour éviter changement de hauteur
         min={min}
       />
     </>

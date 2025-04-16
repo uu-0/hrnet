@@ -8,7 +8,7 @@ import { device } from '../styles/media'
 const Label = styled.label`
   font-size: 14px;
   display: block;
-  font-weight: bold;
+  font-weight: 600;
   color: black; 
   @media ${device.mobileL} {
   font-size: 12px;
@@ -19,6 +19,7 @@ const DropdownContainer = styled.div`
   position: relative;
   width: 98%;
   z-index: 1000;
+  min-height: 20px;
   @media ${device.tablet} {
     width: 95%;
   }
@@ -42,17 +43,28 @@ const DropdownButton = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  min-height: 20px; 
   &:hover {
     border-color: ${({ $hasError }) => ($hasError ? 'red' : 'black')};
   }
 `
+//span pour l'erreur
+const DropdownText = styled.span`
+  display: inline-block;
+  min-height: 18px;
+  font-size: 13px;
+  color: ${({ $hasError }) => ($hasError ? 'red' : 'black')};
+`
+
 //liste du dropdown
 const DropdownList = styled.ul`
   position: absolute;
-  top: 100%;
+  top: 90%;
   right: 0;
   width: 60%;
-  max-height: 200px;
+  max-height: ${({ $isOpen }) => ($isOpen ? '200px' : '0px')};
+  opacity: ${({ $isOpen }) => ($isOpen ? '1' : '0')};
+  transform: ${({ $isOpen }) => ($isOpen ? 'translateY(0)' : 'translateY(-5px)')};
   overflow-y: auto;
   background-color: white;
   border: 1px solid #ddd;
@@ -62,7 +74,9 @@ const DropdownList = styled.ul`
   font-size: 13px;
   list-style-type: none;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+
 `
+
 //item de la liste du dropdown
 const DropdownItem = styled.li`
   padding: 10px 14px;
@@ -80,7 +94,6 @@ const Triangle = styled.span`
   color: #999;
   transform: rotate(0deg);
   transition: transform 0.2s ease, color 0.2s ease;
-
   ${({ $active, $direction }) =>
     $active &&
     css`
@@ -108,21 +121,21 @@ export default function Dropdown({ options, selected, onSelect, required, formSu
 
   return (
     <>
-      <Label htmlFor={options}>{label}</Label>
+      <Label>{label}</Label>
       <DropdownContainer>
         <DropdownButton $isOpen={isOpen} $hasError={hasError} onClick={handleToggle}>
-          <span>{hasError ? <span style={{ color: 'red', fontSize: '13px' }}>This field is required</span> : selected || " "}</span>
+        <DropdownText $hasError={hasError}>
+          {hasError ? 'This field is required' : selected || " "}
+        </DropdownText>
           <Triangle $active={isOpen} $direction={isOpen ? 'asc' : 'desc'}>⏷</Triangle>
         </DropdownButton>
-        {isOpen && (
-          <DropdownList>
-            {options.map((option, index) => (
-              <DropdownItem key={index} onClick={() => handleSelect(option)}>
-                {option}
-              </DropdownItem>
-            ))}
-          </DropdownList>
-        )}
+        <DropdownList $isOpen={isOpen}>
+          {options.map((option, index) => (
+            <DropdownItem key={index} onClick={() => handleSelect(option)}>
+              {option}
+            </DropdownItem>
+          ))}
+        </DropdownList>
       </DropdownContainer>
     </>
   )
