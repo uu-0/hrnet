@@ -1,55 +1,109 @@
-# hrnet
+# 💼 HRNet
+#### Objectif :
+Migrer une application web d'une architecture jQuery vers React.
 
-**objectif :** faire passer une librairie jQuery vers React
+##  Description du projet
+Cette mission a été réalisée pour une société financière fictive dans le but de moderniser leur application interne.
 
-## description
+#### 🔧 Mission principale :
+Refondre les pages clés de l’application en remplaçant un plugin jQuery spécifique par un composant React.
 
->convertir une application de jQuery vers React pour une grande société financière.
->
->- mission principale : refondre les pages clés de l’application en remplaçant un plugin jQuery spécifique par un composant React.
->
->-  mesurer les performances de l'application avant et après la conversion. Cette analyse de performance permettra de quantifier les avantages de la migration vers React.
->
+#### 📊 Mesure de performance :
+Comparer les performances avant et après la migration, afin de quantifier les bénéfices apportés par React (meilleure fluidité, chargement plus rapide, maintenabilité...).
 
-## fonctionnement de l'application
+## ⚙️ Fonctionnalités de l'application
+HRNet est une application web permettant de gérer un registre d’employés.
 
-L'application web HRNet est un registre d'employés, listant leurs informations.
+### 👤 Création d’un employé
+L’utilisateur peut renseigner les informations suivantes :
 
----
+| Catégorie       | Champs                                     |
+|-----------------|--------------------------------------------|
+| Identité        | Prénom, Nom, Date de naissance             |
+| Informations    | Poste                                      |
+| Entrée          | Date d'entrée dans l'entreprise            |
+| Adresse         | Rue, Ville, État, Code postal              |
 
-Elle permet de créer un employé en indiquant :
 
-- son prénom
-- son nom
-- sa date de naissance
-- son poste dans l'entreprise
-- sa date d'entrée dans l'entreprise
-- son adresse, dont :
+### 📋 Liste des employés
+Fonctionnalités du tableau :
 
-  - sa rue
-  - sa ville
-  - son état
-  - son code postal
+| Type            | Champs concernés                                                  |
+|-----------------|-------------------------------------------------------------------|
+| 🔍 Filtre       | Prénom, Nom                                                       |
+| ↕️ Tri asc/desc | Prénom, Nom, Date de naissance, Poste, Date d'entrée, Rue, Ville, État, Code postal |
+| 📄 Pagination   | Nombre de résultats par page, navigation entre pages             |
 
-L'application permet également de lister les employés, ainsi que de réaliser différents tris et filtres :
+## 🛠 Refactorisation des anciens plugins jQuery
+Lors de la migration de l’application de jQuery vers React, plusieurs problèmes liés aux anciens plugins ont été identifiés. Voici un aperçu des principales issues rencontrées et des solutions apportées :
 
-- filtre sur le prénom ou le nom de l'employé
-- tri asc/desc sur le prénom
-- tri asc/desc sur le nom
-- tri asc/desc sur la date de naissance
-- tri asc/desc sur le poste
-- tri asc/desc sur la date d'entrée
-- tri asc/desc sur la rue
-- tri asc/desc sur la ville
-- tri asc/desc sur l'état
-- tri asc/desc sur le code postal
+#### 🔹 Résumé des problèmes rencontrés
 
-Il est également possible pour l'utilisateur de choisir le nombre d'employé affiché sur une page du tableau des employés, et de naviguer entre ces pages.
+| Plugin              | Problème principal                                                              | Solution React                                        |
+|---------------------|----------------------------------------------------------------------------------|--------------------------------------------------------|
+| Date Picker         | Lent, parfois non réactif                                                       | `CustomDatePicker` basé sur **react-datepicker** et **MUI** |
+| Fenêtre modale      | Difficile à styliser, incompatible avec le design system                        | Création d’un **package React Modal** sans dépendances |
+| Menus déroulants    | Lents, incohérences d’affichage et de chargement                                | Composants **Dropdown personnalisés** sans librairies externes |
+| Tableau employés    | Recharge complet à chaque ajout, lenteur notable                               | Composant **EmployeeTable** optimisé avec rendu intelligent |
 
-## liens externes
-HRNet utilise un package lui fournissant une modale afin d'afficher un message de succès ou d'erreur lors de la soumission du formulaire de création d'un employé. 
 
-**le package est disponible via :** [uu0-modal-react-component](https://www.npmjs.com/package/uu0-modal-react-component) 
+#### ✨ Détail des corrections
 
-**repository du package :** 
-[react-modal-uu0](https://github.com/uu-0/react-modal-uu0) 
+| Plugin              | Correction technique                                                             |
+|---------------------|----------------------------------------------------------------------------------|
+| Date Picker         | Remplacement du plugin jQuery par un composant React utilisant `react-datepicker` et `@mui/material` pour une meilleure intégration UX et performance. |
+| Fenêtre modale      | Création d’un composant `Modal` sur-mesure, publié comme package npm, stylisable librement, sans dépendance externe. |
+| Menus déroulants    | Implémentation de composants React personnalisés assurant stabilité, rapidité et ordre constant des options. |
+| Tableau employés    | Développement d’un composant `EmployeeTable` qui met à jour uniquement les lignes nécessaires, évitant le rechargement complet et améliorant la fluidité. |
+
+
+## 🔗 Liens utiles
+### 🧩 Composant modale utilisé :
+Un package React personnalisé affiche une modale de confirmation ou d’erreur lors de la soumission du formulaire.
+
+📦 package NPM : [uu0-modal-react-component](https://www.npmjs.com/package/uu0-modal-react-component)
+
+🛠️ repository GitHub : [uu0-modal-react-component](https://github.com/uu-0/uu0-modal-react-component)
+
+## 📊 Rapport de performances
+Voici une comparaison des résultats Lighthouse avant et après la migration de l'application de jQuery vers React
+
+#### 🔧 Page "Create Employee"
+| Critère                  | jQuery | React |
+|--------------------------|--------|--------|
+| **Performance**          | 100    | 100    |
+| **Accessibilité**        | 96     | 100    |
+| **Bonnes pratiques**     | 92     | 100    |
+| **SEO**                  | 90     | 100    |
+
+#### Détails techniques :
+
+| Statistiques                | jQuery | React  |
+|-----------------------------|--------|--------|
+| First Contentful Paint      | 0,5 s  | 0,4 s  |
+| Largest Contentful Paint    | 0,5 s  | 0,5 s  |
+| Total Blocking Time         | 0 ms   | 10 ms  |
+| Cumulative Layout Shift     | 0      | 0,052  |
+| Speed Index                 | 0,5 s  | 0,5 s  |
+
+
+
+#### 📋 Page "Employee List"
+| Critère                  | jQuery | React  |
+|--------------------------|--------|--------|
+| **Performance**          | 99     | 100    |
+| **Accessibilité**        | 91     | 100    |
+| **Bonnes pratiques**     | 93     | 100    |
+| **SEO**                  | 90     | 100    |
+
+#### Détails techniques :
+| Statistiques                | jQuery | React  |
+|-----------------------------|--------|--------|
+| First Contentful Paint      | 0,6 s  | 0,4 s  |
+| Largest Contentful Paint    | 0,6 s  | 0,5 s  |
+| Total Blocking Time         | 0 ms   | 0 ms   |
+| Cumulative Layout Shift     | 0,045  | 0,048  |
+| Speed Index                 | 0,6 s  | 0,4 s  |
+
+#### 💡 Conclusion :
+La migration vers React a permis une amélioration notable de l’accessibilité, des bonnes pratiques, du SEO et une légère optimisation des performances générales, tout en conservant une bonne fluidité d’affichage.
