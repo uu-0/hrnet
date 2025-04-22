@@ -42,8 +42,8 @@ Lors de la migration de l’application de jQuery vers React, plusieurs problèm
 | Plugin              | Problème principal                                                              | Solution React                                        |
 |---------------------|----------------------------------------------------------------------------------|--------------------------------------------------------|
 | Date Picker         | Lent, parfois non réactif                                                       | `CustomDatePicker` basé sur **react-datepicker** et **MUI** |
-| Fenêtre modale      | Difficile à styliser, incompatible avec le design system                        | Création d’un **package React Modal** sans dépendances |
-| Menus déroulants    | Lents, incohérences d’affichage et de chargement                                | Composants **Dropdown personnalisés** sans librairies externes |
+| Fenêtre modale      | Difficile à styliser, incompatible avec le design system                        | Création d’un **package Modal** en React sans dépendances |
+| Menus déroulants    | Lents, incohérences d’affichage et de chargement                                | Composants **Dropdown personnalisés** |
 | Tableau employés    | Recharge complet à chaque ajout, lenteur notable                               | Composant **EmployeeTable** optimisé avec rendu intelligent |
 
 
@@ -52,7 +52,7 @@ Lors de la migration de l’application de jQuery vers React, plusieurs problèm
 | Plugin              | Correction technique                                                             |
 |---------------------|----------------------------------------------------------------------------------|
 | Date Picker         | Remplacement du plugin jQuery par un composant React utilisant `react-datepicker` et `@mui/material` pour une meilleure intégration UX et performance. |
-| Fenêtre modale      | Création d’un composant `Modal` sur-mesure, publié comme package npm, stylisable librement, sans dépendance externe. |
+| Fenêtre modale      | Création d’un composant `Modal` sur-mesure, publié comme package npm, stylisable librement.            |
 | Menus déroulants    | Implémentation de composants React personnalisés assurant stabilité, rapidité et ordre constant des options. |
 | Tableau employés    | Développement d’un composant `EmployeeTable` qui met à jour uniquement les lignes nécessaires, évitant le rechargement complet et améliorant la fluidité. |
 
