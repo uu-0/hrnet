@@ -7,7 +7,7 @@ import { store } from './redux/store'
 
 import { createGlobalStyle } from 'styled-components'
 import { colors } from './styles/colors'
-import { montserratFont } from './styles/font'
+import { systemUiFont } from './styles/font'
 
 import CreateEmployee from './pages/CreateEmployee'
 import EmployeeList from './pages/EmployeeList'
@@ -16,7 +16,7 @@ import Error from './pages/Error'
 
 const GlobalStyle = createGlobalStyle`
   html {
-    ${montserratFont}
+    ${systemUiFont}
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: black;
@@ -29,6 +29,19 @@ const GlobalStyle = createGlobalStyle`
     flex-direction: column;
     align-items: center;
   }
+
+  .visually-hidden {
+  position: absolute !important;
+  height: 1px; 
+  width: 1px; 
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap;
+  border: 0;
+  padding: 0;
+  margin: -1px;
+}
+
 `
 
 const root = ReactDOM.createRoot(document.getElementById('root'))

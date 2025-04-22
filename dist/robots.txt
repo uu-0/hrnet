@@ -1,5 +1,12 @@
-user-agent: *
-disallow: /admin/
-disallow: /login/
+# robots.txt pour HRNet Employee App
 
-allow: /public/
+user-agent: *
+disallow: /admin
+disallow: /private
+disallow: /config
+disallow: /node_modules
+disallow: /scripts
+disallow: /src
+disallow: /tests
+
+allow: /

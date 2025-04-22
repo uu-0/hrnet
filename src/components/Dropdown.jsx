@@ -4,6 +4,66 @@ import styled, { css } from 'styled-components'
 import { colors } from '../styles/colors'
 import { device } from '../styles/media'
 
+
+/**
+ * composant personnalisé de menu déroulant (dropdown).
+ * 
+ * - permet la sélection d'une option parmi une liste donnée.
+ * - affiche un message d'erreur si le champ est requis et non sélectionné après soumission du formulaire.
+ * - gère l'ouverture/fermeture du menu avec animation.
+ * - style responsive avec `styled-components`.
+ * 
+ * @component
+ * @param {Object} props
+ * @param {string[]} props.options - liste des options à afficher dans le dropdown.
+ * @param {string} props.selected - valeur actuellement sélectionnée.
+ * @param {function} props.onSelect - callback déclenchée lorsqu’une option est sélectionnée.
+ * @param {boolean} [props.required=false] - indique si le champ est requis.
+ * @param {boolean} [props.formSubmitted=false] - indique si le formulaire a été soumis (utilisé pour afficher les erreurs).
+ * @param {string} props.label - label du champ dropdown.
+ * @returns {JSX.Element} le composant `Dropdown`
+ */
+export default function Dropdown({ options, selected, onSelect, required, formSubmitted, label }) {
+  const [isOpen, setIsOpen] = useState(false)
+
+  //fonction pour modifier l'état d'ouverture du dropdown
+  function handleToggle() {
+    setIsOpen(!isOpen)
+  }
+
+  //fonction pour séléctionner une otpion de la liste
+  function handleSelect(option) {
+    onSelect(option)
+    setIsOpen(false)
+  }
+
+  //vérifie que le champ du dropdown est valide ou non
+  const hasError = formSubmitted && required && !selected
+
+  return (
+    <>
+      <Label>{label}</Label>
+      <DropdownContainer>
+        <DropdownButton $isOpen={isOpen} $hasError={hasError} onClick={handleToggle}>
+        <DropdownText $hasError={hasError}>
+          {hasError ? 'This field is required' : selected || " "}
+        </DropdownText>
+          <Triangle $active={isOpen} $direction={isOpen ? 'asc' : 'desc'}>⏷</Triangle>
+        </DropdownButton>
+        <DropdownList $isOpen={isOpen}>
+          {options.map((option, index) => (
+            <DropdownItem key={index} onClick={() => handleSelect(option)}>
+              {option}
+            </DropdownItem>
+          ))}
+        </DropdownList>
+      </DropdownContainer>
+    </>
+  )
+}
+
+//---------- styles ----------
+
 //label du dropdown
 const Label = styled.label`
   font-size: 14px;
@@ -101,42 +161,3 @@ const Triangle = styled.span`
       transform: rotate(${($direction === 'asc' || $direction === 'desc') ? '180deg' : '0deg'});
     `}
 `
-
-export default function Dropdown({ options, selected, onSelect, required, formSubmitted, label }) {
-  const [isOpen, setIsOpen] = useState(false)
-
-  //fonction pour modifier l'état d'ouverture du dropdown
-  function handleToggle() {
-    setIsOpen(!isOpen)
-  }
-
-  //fonction pour séléctionner une otpion de la liste
-  function handleSelect(option) {
-    onSelect(option)
-    setIsOpen(false)
-  }
-
-  //vérifie que le champ du dropdown est valide ou non
-  const hasError = formSubmitted && required && !selected
-
-  return (
-    <>
-      <Label>{label}</Label>
-      <DropdownContainer>
-        <DropdownButton $isOpen={isOpen} $hasError={hasError} onClick={handleToggle}>
-        <DropdownText $hasError={hasError}>
-          {hasError ? 'This field is required' : selected || " "}
-        </DropdownText>
-          <Triangle $active={isOpen} $direction={isOpen ? 'asc' : 'desc'}>⏷</Triangle>
-        </DropdownButton>
-        <DropdownList $isOpen={isOpen}>
-          {options.map((option, index) => (
-            <DropdownItem key={index} onClick={() => handleSelect(option)}>
-              {option}
-            </DropdownItem>
-          ))}
-        </DropdownList>
-      </DropdownContainer>
-    </>
-  )
-}

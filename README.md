@@ -4,14 +4,12 @@
 
 ## description
 
->Dans ce projet, vous participerez à la conversion d’une application de jQuery vers React pour une grande société financière.
+>convertir une application de jQuery vers React pour une grande société financière.
 >
->- Votre mission principale sera de refondre les pages clés de l’application en remplaçant un plugin jQuery spécifique par un composant React.
-Cela impliquera une compréhension approfondie des deux technologies et leur interaction.
+>- mission principale : refondre les pages clés de l’application en remplaçant un plugin jQuery spécifique par un composant React.
 >
->- Vous serez chargé de mesurer les performances de l'application avant et après la conversion. Cette analyse de performance vous permettra de quantifier les avantages de la migration vers React.
+>-  mesurer les performances de l'application avant et après la conversion. Cette analyse de performance permettra de quantifier les avantages de la migration vers React.
 >
->- Vous livrerez les résultats de votre travail avec des rapports détaillés, y compris des analyses de performance et des explications sur les choix techniques effectués pendant la conversion.
 
 ## fonctionnement de l'application
 
@@ -51,7 +49,7 @@ Il est également possible pour l'utilisateur de choisir le nombre d'employé af
 ## liens externes
 HRNet utilise un package lui fournissant une modale afin d'afficher un message de succès ou d'erreur lors de la soumission du formulaire de création d'un employé. 
 
-**le package est disponible via :** [react-modal-components-uu0](https://www.npmjs.com/package/react-modal-component-uu0) 
+**le package est disponible via :** [uu0-modal-react-component](https://www.npmjs.com/package/uu0-modal-react-component) 
 
 **repository du package :** 
 [react-modal-uu0](https://github.com/uu-0/react-modal-uu0) 
